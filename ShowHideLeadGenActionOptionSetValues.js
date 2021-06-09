@@ -7,6 +7,8 @@ function showHideLeadGenValsOnOpp() {
 
 function addNewOpportunityTypeEvent() {
     if (parent.Xrm.Page != null) {
+
+        // listen for Opportunity Type change
         parent.Xrm.Page.data.entity.attributes.get('homie_verticalselection').addOnChange(showHideLeadGenValsOnNewOpp);
     }
 }
