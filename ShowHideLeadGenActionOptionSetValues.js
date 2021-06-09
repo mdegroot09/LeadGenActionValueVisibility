@@ -5,6 +5,12 @@ function showHideLeadGenValsOnOpp() {
     showHideLeadGenActionOptionSetValues(val)
 }
 
+function addNewOpportunityTypeEvent() {
+    if (parent.Xrm.Page != null) {
+        parent.Xrm.Page.data.entity.attributes.get('homie_verticalselection').addOnChange(showHideLeadGenValsOnNewOpp);
+    }
+}
+
 function showHideLeadGenValsOnNewOpp() {
     let val = parent.Xrm.Page.data.entity.attributes.get('homie_verticalselection').getValue()
 
@@ -23,6 +29,7 @@ function showHideLeadGenActionOptionSetValues(val) {
 
     // if seller opportunity
     else if (val == "270440001") {
+        parent.Xrm.Page.getControl("homie_leadgenaction").removeOption(8) // early access request
         parent.Xrm.Page.getControl("homie_leadgenaction").removeOption(9) // favorited a property
         parent.Xrm.Page.getControl("homie_leadgenaction").removeOption(10) // save search
         parent.Xrm.Page.getControl("homie_leadgenaction").removeOption(12) // buyer package
