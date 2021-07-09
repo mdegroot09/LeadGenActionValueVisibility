@@ -19,11 +19,14 @@ function triggerFlowToAddTouringAgent(systemuserid, activityid){
         var req = new XMLHttpRequest();
         var url = "https://prod-28.westus.logic.azure.com:443/workflows/21a1726b7cb54ff38cfeb7153031011b/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=cPW0erHTq-WNpoLYt01SVMLFdFvoMI5Vov-V721ifEE";
         req.open("PUT", url, true);
-        req.setRequestHeader('Content-Type', 'application/json');
+        req.setRequestHeader('Accept', 'application/json')
+        req.setRequestHeader('Content-Type', 'application/json', 'charset=utf-8');
+        req.setRequestHeader('OData-MaxVersion', '4.0')
+        req.setRequestHeader('OData-Version', '4.0')
         req.onreadystatechange = function (){
-            if (this.readyState == 4 /* complete */ || this.readyState == 2){
+            if (this.readyState == 4 /* complete */){
                 req.onreadystatechange = null;
-                if (this.status == 200 || this.status == 204 || this.status == 202){
+                if (this.status == 202){
                     // success
                     setSuccessNotification()
                 }
@@ -46,7 +49,7 @@ function triggerFlowToAddTouringAgent(systemuserid, activityid){
 
 function setSuccessNotification(){
     let notification = {
-        message: "Success",
+        message: 'Success',
         level: 1,
         showCloseButton: true,
         type: 2
@@ -78,5 +81,6 @@ function clearNotification(messageId, type){
             // clear error notification
             Xrm.Page.ui.clearFormNotification(messageId)
         }
+        Xrm.Page.data.refresh()
     }, 5000);
 }
