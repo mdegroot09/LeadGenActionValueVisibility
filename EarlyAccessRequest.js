@@ -3,6 +3,8 @@ function pickEarlyAccessRequest(){
     var systemuserid = parent.Xrm.Page.context.getUserId();
     var activityid = parent.Xrm.Page.data.entity.getId();
 
+    showLoadingGif(true)
+
     // if Touring Agent on Early Access Request is blank on form instance
     if (!homie_touringagent){
         triggerFlowToAddTouringAgent(systemuserid, activityid)
@@ -105,6 +107,7 @@ function setFailureNotification(){
 }
 
 function clearNotification(messageId, type){
+    showLoadingGif(false)
     refreshIfNoTouringAgent()
 
     setTimeout(() => {
@@ -127,4 +130,13 @@ function refreshIfNoTouringAgent(){
     }
     Xrm.Page.ui.refreshRibbon(); // update the ribbon to hide the "pick" button
     return homie_touringagent
+}
+
+function showLoadingGif(bool){
+    if (bool){
+        Xrm.Utility.showProgressIndicator("Picking")
+    }
+    else {
+        Xrm.Utility.closeProgressIndicator()
+    }
 }
