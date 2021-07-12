@@ -125,5 +125,6 @@ function refreshIfNoTouringAgent(){
         Xrm.Page.data.refresh()
         homie_touringagent = parent.Xrm.Page.data.entity.attributes.get('homie_touringagent').getValue();
     }
+    Xrm.Page.ui.refreshRibbon(); // update the ribbon to hide the "pick" button
     return homie_touringagent
 }
