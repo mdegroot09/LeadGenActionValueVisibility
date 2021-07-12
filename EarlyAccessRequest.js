@@ -26,11 +26,18 @@ function triggerFlowToAddTouringAgent(systemuserid, activityid){
         req.onreadystatechange = function (){
             if (this.readyState == 4 /* complete */){
                 req.onreadystatechange = null;
-                if (this.status == 202){
-                    // success
-                    setSuccessNotification()
+                if (this.status == 200 || this.status == 204){
+                    let touringAgent = refreshIfNoTouringAgent()
+                    let systemuserid = parent.Xrm.Page.context.getUserId();
+                    if (touringAgent != systemuserid && touringAgent){
+                        // error 
+                        setFailureNotification()
+                    } else {
+                        // success
+                        setSuccessNotification()
+                    }
                 }
-                else {
+                else if (this.status == 409 /* Conflict */ || this.status != 202 /* Disregard any Accepted status */){
                     // error 
                     setFailureNotification()
                 }
@@ -70,8 +77,7 @@ function setFailureNotification(){
 }
 
 function clearNotification(messageId, type){
-    // refresh the page
-    Xrm.Page.data.refresh()
+    refreshIfNoTouringAgent()
 
     setTimeout(() => {
         if (type == "Success"){
@@ -81,6 +87,15 @@ function clearNotification(messageId, type){
             // clear error notification
             Xrm.Page.ui.clearFormNotification(messageId)
         }
-        Xrm.Page.data.refresh()
+        refreshIfNoTouringAgent()
     }, 5000);
+}
+
+function refreshIfNoTouringAgent(){
+    var touringAgent = parent.Xrm.Page.data.entity.attributes.get('homie_touringagent').getValue();
+    if (!touringAgent){
+        Xrm.Page.data.refresh()
+        touringAgent = parent.Xrm.Page.data.entity.attributes.get('homie_touringagent').getValue();
+    }
+    return touringAgent
 }
