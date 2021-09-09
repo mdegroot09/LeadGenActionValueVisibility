@@ -2444,26 +2444,18 @@ var Jt;
                             let form = Xrm.Page.data
                             let leadId = null;
                             if (form){
-                                console.log('is a form')
                                 let entity = form.entity.getEntityName();
                                 if (entity === 'lead'){
-                                    console.log('is a lead form')
-                                    leadId = []
-                                    leadId[0] = {}
-                                    
-                                    // get lead values and add to new object
 									let id = form.entity.getId();
-                                    let name = form.entity.attributes.get('fullname').getValue();
-                                    leadId[0].id = id
-                                    leadId[0].name = name
-                                    leadId[0].entityType = 'lead'
+									let name = form.entity.attributes.get('fullname').getValue();
+
+                                    leadId = []
+                                    leadId[0] = {
+										id: id,
+										name: name,
+										entityType: 'lead'
+									}
                                 }
-                                else {
-                                    console.log('is not a lead form')
-                                }
-                            }
-                            else {
-                                console.log('is not a form')
                             }
 							return t.next = 12, Xrm.Navigation.openForm({
 								useQuickCreateForm: !0,
