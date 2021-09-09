@@ -1,8 +1,11 @@
 // JavaScript source code
 function showHideLeadGenValsOnOpp() {
     let val = parent.Xrm.Page.data.entity.attributes.get('homie_opportunitytype').getValue()
+    let leadGenAction = parent.Xrm.Page.getControl("homie_leadgenaction")
 
-    showHideLeadGenActionOptionSetValues(val)
+    if (leadGenAction) {
+        showHideLeadGenActionOptionSetValues(val)
+    }
 }
 
 function addNewOpportunityTypeEvent() {
